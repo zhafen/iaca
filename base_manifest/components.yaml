@@ -87,6 +87,7 @@ fields:
 - description: A component that defines the structure and constraints for data columns in a component definition.
 - component:
     multiplicity: "0..1"
+    normalize: False
 - issue:
     value: >
         Parsing fails if the user doesn't specify the dtype using the shortcut syntax.
@@ -128,6 +129,7 @@ compinst:
     components.
 - component:
     multiplicity: "0..*"
+    normalize: False
 - fields:
     component_type [str]: The type of the component.
 

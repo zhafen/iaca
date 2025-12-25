@@ -234,10 +234,8 @@ class TransformSystem:
             priority: 0.1
         """
 
-        # Determine which components should not be normalized
-        skip_normalization = ["compinst", "fields"]  # Always skip these
-        
         # Check raw component definitions for normalize=False
+        skip_normalization = []
         if "component" in registry:
             for entity in registry["component"].index.get_level_values("entity").unique():
                 try:
