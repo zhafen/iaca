@@ -106,17 +106,7 @@ class ComponentDefExtractor(BaseEstimator, TransformerMixin):
                 "component.multiplicity": "multiplicity",
                 "component.normalize": "normalize",
             }
-        )
-        
-        # Drop any remaining component.* columns that shouldn't be in the output
-        component_cols = [col for col in X.columns if col.startswith("component.")]
-        X = X.drop(columns=component_cols)
-        
-        # Fill missing normalize with default value of True
-        if "normalize" in X.columns:
-            X.loc[X["normalize"].isna(), "normalize"] = True
-        else:
-            X["normalize"] = True
+        ).drop(columns=["component.value"])
 
         return X
 

@@ -85,6 +85,7 @@ class Field(pa.Column):
         metadata=None,
         drop_invalid_rows=False,
         multiplicity: str = "0..*",
+        normalize: bool = True,
         categories: list[str] = None,
         pattern: str = None,
         **kwargs,
@@ -122,6 +123,7 @@ class Field(pa.Column):
             **kwargs,
         )
         self.multiplicity = multiplicity
+        self.normalize = normalize
         self.pattern = pattern
 
     @classmethod
