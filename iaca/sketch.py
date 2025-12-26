@@ -41,7 +41,7 @@ class Architect:
         self.transform_sys = transform_sys if transform_sys else etl.TransformSystem()
         self.parameter_entity = parameter_entity
 
-    def perform_registry_etl(
+    def run_manifest_etl(
         self,
         filename_patterns: str | list[str] = None,
         input_yaml: str = None,

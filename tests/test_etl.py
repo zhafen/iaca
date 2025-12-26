@@ -729,7 +729,7 @@ class TestYAMLWriter(unittest.TestCase):
         architect = sketch.Architect(
             "./tests/test_data/healthcare_example/manifest/**/*.yaml"
         )
-        registry = architect.perform_registry_etl()
+        registry = architect.run_manifest_etl()
 
         # Write to a temporary directory
         with tempfile.TemporaryDirectory() as tmpdir:

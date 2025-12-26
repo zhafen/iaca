@@ -13,7 +13,7 @@ class TestArchitect(unittest.TestCase):
         self.min_priority = 0.6
 
     def test_etl(self):
-        registry = self.architect.perform_registry_etl()
+        registry = self.architect.run_manifest_etl()
 
         assert "link" in registry
         assert "link" in registry["compinst"].index.get_level_values("entity")
@@ -23,7 +23,7 @@ class TestArchitect(unittest.TestCase):
         assert docs_parameters["output_dir"] == "./docs/generated"
 
     def test_validate(self):
-        self.architect.perform_registry_etl()
+        self.architect.run_manifest_etl()
         tests, test_results = self.architect.validate_registry(
             min_priority=self.min_priority
         )
