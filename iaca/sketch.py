@@ -57,6 +57,9 @@ class Architect:
         - todo: >
             Point to the unit test for this, instead of checking the status listed in
             the docstring.
+        - todo: >
+            This processes all the iaca manifest every call. We probably want to reduce
+            the amount processed.
         """
         # Extract entities from files
         filename_patterns = (
