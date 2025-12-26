@@ -84,10 +84,16 @@ field:
     drop_invalid_rows [bool] = False: If True, drop invalid rows during validation.
 
 fields:
-- description: A component that defines the structure and constraints for data columns in a component definition.
+- description: >
+    A component that defines the structure and constraints for data columns in a component definition.
 - component:
     multiplicity: "0..1"
     normalize: False
+- specifications:
+    input:
+        - description: The provided fields are the input for the entity.
+    output:
+        - description: The provided fields are the output for the entity.
 - issue:
     value: >
         Parsing fails if the user doesn't specify the dtype using the shortcut syntax.
