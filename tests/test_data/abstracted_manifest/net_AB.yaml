@@ -1,18 +1,12 @@
 meta:
     - description: |
           Various ways to describe a network in component form. The network consists of
-          nodes A, B, C, D and links AB (type alpha), AC (type alpha), and AD (type beta).
+          nodes A and B and link AB (type alpha).
 
 A:
     - node
 
 B:
-    - node
-
-C:
-    - node
-
-D:
     - node
 
 AB:
@@ -102,10 +96,10 @@ link_to_minimal_link:
           input: link
           output: [minimal_link, link_type]
     - mapping:
-          - minimal_link:
+          minimal_link:
                 source: link.A
                 target: link.B
-          - link_type: link.link_type
+          link_type: link.link_type
 
 link_type_to_link_type_flag:
     - description: >
