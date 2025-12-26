@@ -1,195 +1,195 @@
 infrastructure:
-- description: >
-    The owner is a set of technologies, functions, people, etc. defined by
-    a manifest and created to satisfy one or more requirements.
-- component:
-    multiplicity: "0..1"
+    - description: >
+          The owner is a set of technologies, functions, people, etc. defined by
+          a manifest and created to satisfy one or more requirements.
+    - component:
+          multiplicity: '0..1'
 
 requirement:
-- description: >
-    The owner is a condition an infrastructure is designed around fulfilling.
-- component:
-    multiplicity: "0..1"
-- fields:
-    value [entity]: The infrastructure this requirement is for.
-    priority [float]:
-        description: Value ranging from 0 (not a priority) to 1 (top priority).
-        default: 0.5
-- equation:
-    value: x_target, requirement_fn, domain_fn, infra_target = x, objective_fn, domain_fn, infra | objective_fn(infra, x) & domain_fn(x)
-    note: Same as objective, but now the objective_fn accepts an infrastructure.
-- todo:
-    value: >
-        I think it's pretty confusing to have requirement's value be that of the
-        infrastructure it's for.
-    priority: 0.2
+    - description: >
+          The owner is a condition an infrastructure is designed around fulfilling.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          value [entity]: The infrastructure this requirement is for.
+          priority [float]:
+              description: Value ranging from 0 (not a priority) to 1 (top priority).
+              default: 0.5
+    - equation:
+          value: x_target, requirement_fn, domain_fn, infra_target = x, objective_fn, domain_fn, infra | objective_fn(infra, x) & domain_fn(x)
+          note: Same as objective, but now the objective_fn accepts an infrastructure.
+    - todo:
+          value: >
+              I think it's pretty confusing to have requirement's value be that of the
+              infrastructure it's for.
+          priority: 0.2
 
 objective:
-- description: A single goal.
-- equation:
-    value: x_target, objective, domain_fn = x, objective_fn, domain_fn | objective_fn(x) or not domain_fn(x)
-    parameters:
-        objective_function [function]: The
-    note: >
-        The target state, objective function, and domain function s.t. the objective
-        function evaluates to true or the domain function evaluates to false given
-        the state.
-- child: requirement
+    - description: A single goal.
+    - equation:
+          value: x_target, objective, domain_fn = x, objective_fn, domain_fn | objective_fn(x) or not domain_fn(x)
+          parameters:
+              objective_function [function]: The
+          note: >
+              The target state, objective function, and domain function s.t. the objective
+              function evaluates to true or the domain function evaluates to false given
+              the state.
+    - child: requirement
 
 status:
-- description: Tracks implementation progress.
-- component:
-    multiplicity: "0..1"
-- fields:
-    value [str]:
-        categories:
-            - new
-            - in design
-            - in development
-            - in review
-            - in production
-            - on hold
-            - cancelled
+    - description: Tracks implementation progress.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          value [str]:
+              categories:
+                  - new
+                  - in design
+                  - in development
+                  - in review
+                  - in production
+                  - on hold
+                  - cancelled
 
 todo:
-- description: A descriptive note regarding something to be addressed.
-- component
-- fields:
-    value [str]: A description of the thing to address.
-    priority [float]:
-        description: Value ranging from 0 (not a priority) to 1 (top priority).
-        default: 0.5
+    - description: A descriptive note regarding something to be addressed.
+    - component
+    - fields:
+          value [str]: A description of the thing to address.
+          priority [float]:
+              description: Value ranging from 0 (not a priority) to 1 (top priority).
+              default: 0.5
 
 issue:
-- description: A todo that specifically refers to a problem in the code.
-- component
-- fields:
-    value [str]: A description of the thing to address.
-    priority [float]:
-        description: Value ranging from 0 (not a priority) to 1 (top priority).
-        default: 0.6
-- parent: todo
+    - description: A todo that specifically refers to a problem in the code.
+    - component
+    - fields:
+          value [str]: A description of the thing to address.
+          priority [float]:
+              description: Value ranging from 0 (not a priority) to 1 (top priority).
+              default: 0.6
+    - parent: todo
 
 satisfies:
-- description: >
-    The source (owner) entity satisfies the target entity. There can be multiple
-    [satisfies] relationships for a given target entity.
-- component
-- link_type:
-    reverse: satisfied_by
-- fields:
-    value [entity]: The [requirement] entity the owner entity satisfies.
+    - description: >
+          The source (owner) entity satisfies the target entity. There can be multiple
+          [satisfies] relationships for a given target entity.
+    - component
+    - link_type:
+          reverse: satisfied_by
+    - fields:
+          value [entity]: The [requirement] entity the owner entity satisfies.
 
 satisfied_by:
-- description: The source (owner) entity is satisfied by the target entity.
-- component
-- link_type:
-    reverse: satisfies
-- fields:
-    value [entity]: The [requirement] entity the owner entity is satisfied by.
+    - description: The source (owner) entity is satisfied by the target entity.
+    - component
+    - link_type:
+          reverse: satisfies
+    - fields:
+          value [entity]: The [requirement] entity the owner entity is satisfied by.
 
 benefit:
-- description: >
-    A component describing a benefit associated with an entity. Used to evaluate
-    possible solutions and implementations.
-- component
+    - description: >
+          A component describing a benefit associated with an entity. Used to evaluate
+          possible solutions and implementations.
+    - component
 
 drawback:
-- description: >
-    A component describing a drawback associated with an entity. Used to evaluate
-    possible solutions and implementations.
-- component
+    - description: >
+          A component describing a drawback associated with an entity. Used to evaluate
+          possible solutions and implementations.
+    - component
 
 task:
-- description: >
-    The entity is a task to complete. Fully-implemented tasks can take a few
-    forms:
-        1. A function, likely in Python.
-        2. A Directed Acyclic Graph (DAG).
-        3. A written procedure.
-    All above require a task executor.
-- component:
-    multiplicity: "0..1"
-- parent: component
+    - description: >
+          The entity is a task to complete. Fully-implemented tasks can take a few
+          forms:
+              1. A function, likely in Python.
+              2. A Directed Acyclic Graph (DAG).
+              3. A written procedure.
+          All above require a task executor.
+    - component:
+          multiplicity: '0..1'
+    - parent: component
 
 task_execution:
-- description: The actual completion of a task
-- component
-- fields:
-    task [task]: The task executed.
-    start [datetime]: When the task was started.
-    duration [timedelta]: How long it took to complete the task.
-    executor [entity]: What entity completed the task.
-    execution_status [categorical]:
-        description: >
-            This component also catalogs tasks not yet started or completed, as well
-            as failures.
-        categories:
-            - not_started
-            - in_progress
-            - done
-            - failed
+    - description: The actual completion of a task
+    - component
+    - fields:
+          task [task]: The task executed.
+          start [datetime]: When the task was started.
+          duration [timedelta]: How long it took to complete the task.
+          executor [entity]: What entity completed the task.
+          execution_status [categorical]:
+              description: >
+                  This component also catalogs tasks not yet started or completed, as well
+                  as failures.
+              categories:
+                  - not_started
+                  - in_progress
+                  - done
+                  - failed
 
 test:
-- description: >
-    The entity is a test to perform on a registry. At this time it must
-    be the path to a Python function that accepts a registry as an argument
-    and returns a dataframe containing any invalid components.
-- component:
-    multiplicity: "0..1"
-- fields:
-    implementation [str]: The location of the test code.
+    - description: >
+          The entity is a test to perform on a registry. At this time it must
+          be the path to a Python function that accepts a registry as an argument
+          and returns a dataframe containing any invalid components.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          implementation [str]: The location of the test code.
 
 procedure:
-- description: A process for completing a task.
-- component:
-    multiplicity: "0..1"
-- fields:
-    value [str]: Procedure in written format, following no particular guidelines.
+    - description: A process for completing a task.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          value [str]: Procedure in written format, following no particular guidelines.
 
 input:
-- description: Component representing input.
-- component:
-    multiplicity: "0..1"
-- fields:
-    value [id]: >
-        Input component instances for the task. Is of type "fields", so will be parsed
-        in the same manner.
+    - description: Component representing input.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          value [id]: >
+              Input component instances for the task. Is of type "fields", so will be parsed
+              in the same manner.
 
 output:
-- description: Component representing output.
-- component:
-    multiplicity: "0..1"
-- fields:
-    value [id]: >
-        Output component instances for the task. Is of type "fields", so will be parsed
-        in the same manner.
+    - description: Component representing output.
+    - component:
+          multiplicity: '0..1'
+    - fields:
+          value [id]: >
+              Output component instances for the task. Is of type "fields", so will be parsed
+              in the same manner.
 
 fully_designed:
-- description: >
-    Each [requirement] entity has at least one [satisfies] entity or one [child] entity.
-- requirement:
-    priority: 0.9
+    - description: >
+          Each [requirement] entity has at least one [satisfies] entity or one [child] entity.
+    - requirement:
+          priority: 0.9
 
 fully_implemented:
-- description: |
-    Meets the same criteria as "fully_designed" and all [satisfies] entities
-    either have a test that passes when executed or have a status of "in production".
-- requirement:
-    priority: 0.7
+    - description: |
+          Meets the same criteria as "fully_designed" and all [satisfies] entities
+          either have a test that passes when executed or have a status of "in production".
+    - requirement:
+          priority: 0.7
 
 fully_defined:
-- description: All [compdef] entities are defined and valid.
-- requirement:
-    priority: 0.8
+    - description: All [compdef] entities are defined and valid.
+    - requirement:
+          priority: 0.8
 
 fully_connected:
-- description: >
-    The network composed of [link] components and entities as nodes is fully connected.
-- requirement:
-    priority: 0.4
+    - description: >
+          The network composed of [link] components and entities as nodes is fully connected.
+    - requirement:
+          priority: 0.4
 
 no_forbidden_components:
-- description: No [error], [todo], or other "forbidden" components.
-- requirement:
-    priority: 0.5
+    - description: No [error], [todo], or other "forbidden" components.
+    - requirement:
+          priority: 0.5
