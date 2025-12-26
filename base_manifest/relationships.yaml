@@ -82,6 +82,17 @@ child:
               between those two use cases and how to work with them in the system should
               be reconciled.
           priority: 0.1
+    - todo:
+            value: >
+                Honestly, components are the alternative to inheritance, so we
+                should be careful about mixing and matching. Components that are
+                specifications of other components is maybe a bad idea? But what
+                about an alternate version where children inherit the same components
+                as their parents? How does that relate to requirements as children
+                of parent requirements? It could work well because you just set the
+                a single requirement component for the root level that points to the
+                right infrastructure, and then all children inherit.
+            priority: 0.8
     - specifications:
           specification:
               - description: >
