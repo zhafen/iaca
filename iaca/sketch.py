@@ -76,7 +76,7 @@ class Architect:
 
         # Update existing registry if applicable
         if hasattr(self, "registry"):
-            self.registry = self.registry.update(registry, mode=mode)
+            self.registry.update(registry, mode=mode)
         else:
             self.registry = registry
 
