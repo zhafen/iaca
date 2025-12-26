@@ -44,6 +44,8 @@ class Architect:
     def perform_registry_etl(
         self,
         filename_patterns: str | list[str] = None,
+        input_yaml: str = None,
+        mode: str = "upsert",
     ):
         """
         Main ETL workflow: extract, load, preprocess, system transforms, user transforms.
@@ -60,17 +62,23 @@ class Architect:
         filename_patterns = (
             filename_patterns if filename_patterns else self.filename_patterns
         )
-        self.registry = self.extract_sys.extract_entities(
-            filename_patterns, root_dir=self.root_dir
+        registry = self.extract_sys.extract_entities(
+            filename_patterns, root_dir=self.root_dir, input_yaml=input_yaml,
         )
 
         # Set the parameter entity
-        self.registry.set_parameter_entity(self.parameter_entity)
+        registry.set_parameter_entity(self.parameter_entity)
 
         # Apply transforms
-        self.registry = self.transform_sys.apply_preprocess_transforms(self.registry)
-        self.registry = self.transform_sys.apply_system_transforms(self.registry)
-        self.registry = self.transform_sys.apply_postprocess_transforms(self.registry)
+        registry = self.transform_sys.apply_preprocess_transforms(registry)
+        registry = self.transform_sys.apply_system_transforms(registry)
+        registry = self.transform_sys.apply_postprocess_transforms(registry)
+
+        # Update existing registry if applicable
+        if hasattr(self, "registry"):
+            self.registry = self.registry.update(registry, mode=mode)
+        else:
+            self.registry = registry
 
         return self.registry
 
