@@ -53,6 +53,16 @@ field:
                 - unique: Whether the field can contain null values.
     - subset of: ordered_set
 
+subset:
+    - relation
+    - subset:
+        extension:
+            - description: >
+                A subset where the constraints include requiring additional related
+                components. Because all extensions are technically just a subset of
+                an existing component with additional requirements, extensions do
+                not require new tables to be defined.
+
 component:
     - description: >
         A [dictionary] of [field] components of equal length. This is the raw data of
@@ -108,13 +118,3 @@ syntax_challenges:
         an extension of that component. Maybe we allow "inheritance" where the child
         component is a subset of the parent component that also has required components
         defined for the purpose of extending the component.
-
-subset:
-    - relation
-    - subset:
-        extension:
-            - description: >
-                A subset where the constraints include requiring additional related
-                components. Because all extensions are technically just a subset of
-                an existing component with additional requirements, extensions do
-                not require new tables to be defined.
