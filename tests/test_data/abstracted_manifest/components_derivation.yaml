@@ -1,0 +1,120 @@
+meta:
+    - description: >
+        This page contains key elements for working with components. The definitions
+        in this page are accurate, but may use syntax defined after the component is.
+
+value:
+    - description: >
+        The simplest possible component: A single value of arbitrary type. Every
+        single component is a subset or extension of the [value] component, and
+        accordingly every component has the "value" field.
+    - fields:
+        value: The value itself.
+    - subset:
+        key:
+            - description: >
+                A [value] typically used as an index/reference for other
+                values.
+            - todo:
+                value: We may need to restrict keys to being strings.
+                priority: 0.1
+
+set:
+    - description: A collection of [value]s.
+    - extension of: value
+    - fields:
+        value: The contents of the [set].
+        definition: Necessary info to define the set, e.g. constraints.
+    - subset:
+        ordered_set:
+            - description: A set where order matters.
+            - subset:
+                key_value_pair:
+                    - description: >
+                        An [ordered_set] consisting of a [key] component followed by a
+                        [value] component.
+                    - fields:
+                        key: The key.
+                        value: Value.
+            - subset:
+                dictionary:
+                    - description: An [ordered_set] of [key_value_pair] components.
+                    - fields:
+                        definition: All items must be [key_value_pair] components.
+
+field:
+    - description: |
+        A set with specific constraints useful for data manipulation.
+    - fields:
+        definition: |
+            A [dictionary] with the following items:
+                - dtype: Data type for all values in the set.
+                - nullable: Whether null values are allowed in the field.
+                - unique: Whether the field can contain null values.
+    - subset of: ordered_set
+
+component:
+    - description: >
+        A [dictionary] of [field] components of equal length. This is the raw data of
+        a table.
+    - subset of: dictionary
+
+element:
+    - subset of: link
+    - description: The source is an element of the target, which must have a set component.
+
+entity:
+    - description: >
+        A [key_value_pair] where the key is the entity ID and the value is a set of
+        [component]s and/or entities.
+
+example_set:
+    - set
+    - element: "[first_element]"
+    - element: b
+
+first_element:
+    - description: Part of the example set.
+    - value: 1
+
+another_element:
+    - description: Another part of the example set.
+    - value: 2
+    - element of: example_set
+
+syntax_todo:
+    - description: Something
+    - subset of: todo
+
+syntax_challenges:
+    - syntax_todo: >
+        Notation for multiple components of the same type. Maybe "component_type s"?
+    - syntax_todo: >
+        Binary relationship notation going both ways.
+        Maybe "component_type of:" and "component_type:"?
+    - syntax_todo: >
+        Notation for indicating that a component is a row-wise subset of another
+        component, i.e. that it has the same fields but additional constraints.
+        Maybe "subset of:" and "subset s", i.e. we use a "subset" relation?
+    - syntax_todo: >
+        Notation for defining an entity in-line vs linking to an existing entity.
+        Maybe "[entity_name]"?
+    - syntax_todo: >
+        Notation for indicating that a component must be joined with another component
+        to be interpreted correctly. Maybe: "required:"?
+    - syntax_todo: >
+        Notation for working with a component that would be a subset of another
+        component, except it has additional required associated components or is
+        an extension of that component. Maybe we allow "inheritance" where the child
+        component is a subset of the parent component that also has required components
+        defined for the purpose of extending the component.
+
+subset:
+    - relation
+    - subset:
+        extension:
+            - description: >
+                A subset where the constraints include requiring additional related
+                components. Because all extensions are technically just a subset of
+                an existing component with additional requirements, extensions do
+                not require new tables to be defined.

@@ -179,10 +179,3 @@ net_ABCD_normed_3:
                 includes:
                     - link_value: {value: 0}
     - transform_of: net_ABCD
-        
-
-        
-
-        
-
-        
