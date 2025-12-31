@@ -118,3 +118,9 @@ syntax_challenges:
         an extension of that component. Maybe we allow "inheritance" where the child
         component is a subset of the parent component that also has required components
         defined for the purpose of extending the component.
+    - syntax_todo: >
+        Notation for subsets with constant values for one or more fields.
+    - syntax_todo: >
+        Notation for functions and classes.
+    - syntax_todo: >
+        Notation for a component that is at the intersection of two subsets.

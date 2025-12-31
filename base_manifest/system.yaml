@@ -59,6 +59,64 @@ is_a_useful_tool:
     Fundamentally, iaca must serve a purpose.
 - requirement: iaca_infrastructure
 
+works_smoothly:
+- description: There are no performance issues, i.e. the wait for the user is minimized.
+- requirement
+- parent: is_a_useful_tool
+
+iaca_database_architecture:
+- satisfies: works_smoothly
+- includes:
+    key_value_store:
+        - description: >
+            One extreme. Since every component is a subset of value, everything can live
+            in a [value] table with columns (entity, component_type, field_name, value).
+        - candidate
+    one_table_per_extension_new_columns:
+        - description: |
+            Extensions are subsets that also add additional fields. These fields could
+            be stored in a dedicated table for each extension, and then joined back
+            to the parent component type as needed. For example, [set] is an extension
+
+            Example:
+                - [set] is an extension of [value] that has the new field [set.definition].
+                - The [set.value] field would live in the [value] table.
+                - The [set.definition] field would live in the [set] table.
+                - The [value] table would have columns (entity, component_type, value).
+                - The [set] table would have columns (entity, component_type, definition).
+                - [ordered_set] is a subtype of [set] with no new fields.
+                - The [ordered_set.value] field would live in the [value] table.
+                - The [ordered_set.definition] field would live in the [set] table.
+        - candidate
+    one_table_per_extension:
+        - description: |
+            All fields for a given extension could be stored in a table for that
+            extension, not just the new columns.
+
+            Example:
+                - [set] is an extension of [value] that has the new field [set.definition].
+                - Both [set.value] and [set.definition] would live in the [set] table.
+                - The [value] table would have columns (entity, component_type, value).
+                - The [set] table would have columns (entity, component_type, value, definition).
+                - [ordered_set] is a subtype of [set] with no new fields.
+                - Both [ordered_set.value] and [ordered_set.definition] would live in [set] table.
+        - candidate
+    one_table_per_subtype:
+        - description: |
+            The other extreme from [.key_value_store], and the closest to the current
+            architecture at the time of writing. In this architecture every single
+            subset would have its own table, even if no new fields were added.
+
+            Example:
+                - [set] is an extension of [value] that has the new field [set.definition].
+                - Both [set.value] and [set.definition] would live in the [set] table.
+                - [ordered_set] is a subtype of [set] with no new fields.
+                - Both [ordered_set.value] and [ordered_set.definition] would live in the [ordered_set] table.
+                - The [value] table would have columns (entity, value).
+                - The [set] table would have columns (entity, value, definition).
+                - The [ordered_set] table would have columns (entity, value, definition).
+        - candidate
+
 records_system_architecture:
 - requirement
 - parent: is_a_useful_tool
@@ -100,7 +158,6 @@ implements_systems:
                     to reconcile and then rewrite would be very helpful.
                 - requirement:
                     priority: 0.7
-
 
 works_with_llms_to_implement_systems:
 - description: >
